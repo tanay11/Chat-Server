@@ -17,8 +17,9 @@ const io = socketIO(server); // running socket io on 5000
 io.on('connection', (socket) => {
     console.log("we have new connection");
     socket.on('join', ({name, room}, callback) => {
+        
         const { error, user } = addUser({id : socket.id, name, room})
-
+        console.log(user)
         if (error) return callback(error);
         socket.emit('message', { user:'admin', text:`${user.name} welcome to the room ${user.room}`} ); // tp the new user
         socket.broadcast.to(user.room).emit('message',{ user:'admin', text:`${user.name} has joined!!`}); // to recipients
