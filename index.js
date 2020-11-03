@@ -15,7 +15,7 @@ const server = http.createServer(app);//creating server
 const io = socketIO(server); // running socket io on 5000
 
 io.on('connection', (socket) => {
-    console.log("we have new connection");
+    console.log("we have new connection",socket.id);
     socket.on('join', ({name, room}, callback) => {
         
         const { error, user } = addUser({id : socket.id, name, room})
@@ -33,6 +33,7 @@ io.on('connection', (socket) => {
         callback();
     })
     socket.on('disconnect',() => {
+        removeUser(socket.id)
         console.log("user had left")
     })
 })
